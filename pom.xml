@@ -30,20 +30,27 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
 </dependency>
- 
+ <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
 <!--单元测试依赖-->
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-test</artifactId>
     <scope>test</scope>
 </dependency>
- 
-<!--模版使用的依赖，spring官方模版引擎，前段开发使用-->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-thymeleaf</artifactId>
-</dependency>
- 
+
 <!--操作数据库的依赖-->
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -61,60 +68,47 @@
 			<artifactId>modelmapper</artifactId>
 			<version>2.3.2</version>
 		</dependency>
-  
   <dependency>
-    <groupId>javax.websocket</groupId>
-    <artifactId>javax.websocket-api</artifactId>
-    <version>1.0</version>
-    <scope>provided</scope>
-</dependency>
-  
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.0.1</version>
-      <scope>provided</scope>
-    </dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+ 
   </dependencies>
-  
-  <repositories>
-  <repository>
-  <id>people.apache.snapshots</id>
-  <url>http://repository.apache.org/content/groups/snapshots-group/</url>
-  <releases>
-  <enabled>false</enabled>
-  </releases>
-  <snapshots>
-  <enabled>true</enabled>
-  </snapshots>
-  </repository>
-  </repositories>
-  <pluginRepositories>
-  <pluginRepository>
-  <id>apache.snapshots</id>
-  <name>Apache Snapshorts</name>
-  <url>
-  http://repository.apche.org/content/groups/snapshots-group/
-  </url>
-  <releases>
-  <enabled>false</enabled>
-  </releases>
-  <snapshots>
-  <enabled>true</enabled>
-  </snapshots>
-  </pluginRepository>
-  </pluginRepositories>
   
   
   
   <build>
-  <finalName>WebContent</finalName>
+  <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
+  
    <plugins>
         <!--使用maven构建项目的插件，生成MANIFEST.MF主清单属性-->
         <plugin>
@@ -122,32 +116,44 @@
             <artifactId>spring-boot-maven-plugin</artifactId>
         </plugin>
     
-    <plugin>             
-	       <groupId>org.apache.tomcat.maven</groupId>
-	       <artifactId>tomcat7-maven-plugin</artifactId>
-	       <version>2.2</version>
-	       
-	       <configuration>
-	       <url>http://localhost:8080/manager/text</url>
-	       <path>/demo</path>
-	       <server>tomcat7</server>
-	       <username>admin</username>
-	       <password>admin</password>
-	       
-	 
-	       
-	       </configuration>
-	        
-	        <executions>
-	          <execution>
-	          <phase>package</phase>
-	          <goals>
-	          <goal>run</goal>
-	          </goals>
-	          </execution>
-	          </executions>
-	          
-	       </plugin>
+     <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M3</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <execution>
+                        <id>default-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/classes</outputDirectory>
+                            <delimiters>
+                                <delimiter>@</delimiter>
+                            </delimiters>
+                            <useDefaultDelimiters>false</useDefaultDelimiters>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>src/main/resources.${spring.profiles.active}</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
    </plugins>      
   </build>
   
