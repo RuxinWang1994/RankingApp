@@ -17,7 +17,44 @@
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.0.0.RELEASE</version>
+</parent>
+
   <dependencies>
+  <!--web项目依赖-->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+ 
+<!--单元测试依赖-->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+</dependency>
+ 
+<!--模版使用的依赖，spring官方模版引擎，前段开发使用-->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+ 
+<!--操作数据库的依赖-->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+ 
+<!--aop编程依赖-->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-aop</artifactId>
+</dependency>
+  
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -65,6 +102,12 @@
   <build>
   <finalName>WebContent</finalName>
    <plugins>
+        <!--使用maven构建项目的插件，生成MANIFEST.MF主清单属性-->
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+    
     <plugin>             
 	       <groupId>org.apache.tomcat.maven</groupId>
 	       <artifactId>tomcat7-maven-plugin</artifactId>
